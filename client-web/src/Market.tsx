@@ -130,10 +130,11 @@ export function Market() {
   return (
     <>
       <header className="container">
-        <h1>
-          Currently viewing <em>{market.name}</em> and acting as{" "}
-          <em>{users.get(actingAs || "")?.name}</em>.
-        </h1>
+        <h2>
+          Viewing <em>{market.name}</em> and as{" "}
+          <em>{users.get(actingAs || "")?.name}</em>. &nbsp; Available:{" "}
+          <strong>{portfolio?.availableBalance}</strong>
+        </h2>
         {market.closed ? (
           <h3>Market is settled at {market.closed.settlePrice}.</h3>
         ) : (
