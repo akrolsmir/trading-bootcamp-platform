@@ -14,12 +14,15 @@ export function Markets() {
   } = useWebSocket();
   const navigate = useNavigate();
 
+  const toShow = ["t1", "t2"];
+
   // Filter for open markets
   const markets = Object.fromEntries(
     Object.entries(allMarkets)
       .filter(([_, market]) => market.open)
       // For this game, only show _test markets
-      .filter(([_, market]) => market.name?.endsWith("_test"))
+      // .filter(([_, market]) => market.name?.endsWith("_test"))
+      .filter(([_, market]) => toShow.includes(market.name))
   );
 
   const handleOrder = (marketId: number, side: "buy" | "sell") => {
@@ -53,8 +56,8 @@ export function Markets() {
           <tr>
             <th>Market</th>
             <th>Bid</th>
-            <th>Ask</th>
             <th>Mid</th>
+            <th>Ask</th>
             <th>Order Size</th>
             <th>Actions</th>
           </tr>
@@ -93,9 +96,16 @@ export function Markets() {
                     {market.name}
                   </a>
                 </td>
-                <td>{bestBid}</td>
-                <td>{bestOffer}</td>
-                <td>{mid}</td>
+                <td>
+                  <h3>{bestBid}</h3>
+                </td>
+                <td>
+                  <h3>{mid}</h3>
+                </td>
+                <td>
+                  <h3>{bestOffer}</h3>
+                </td>
+
                 <td>
                   <input
                     type="number"
