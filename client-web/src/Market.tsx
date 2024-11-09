@@ -64,12 +64,18 @@ export function Market() {
   const bids =
     market.orders?.filter(
       (x) =>
-        x.side === websocket_api.Side.BID && x.price !== null && "price" in x
+        x.side === websocket_api.Side.BID &&
+        x.price !== null &&
+        "price" in x &&
+        x.size
     ) || [];
   const offers =
     market.orders?.filter(
       (x) =>
-        x.side === websocket_api.Side.OFFER && x.price !== null && "price" in x
+        x.side === websocket_api.Side.OFFER &&
+        x.price !== null &&
+        "price" in x &&
+        x.size
     ) || [];
 
   bids.sort((a, b) => b.price! - a.price!);
@@ -90,7 +96,7 @@ export function Market() {
 
   const handleSubmitOrder = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const size = parseInt(orderSize);
+    const size = parseFloat(orderSize);
     const price = parseFloat(orderPrice);
 
     if (isNaN(size) || isNaN(price) || size <= 0 || price < 0) {
