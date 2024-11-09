@@ -1,26 +1,39 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import useWebSocket from "../lib/useWebSocket";
+import { websocket_api } from "schema-js";
 
 export function Markets() {
   const [orders, setOrders] = useState<Record<string, { size: string }>>({});
-  const ws = useWebSocket();
+  const {
+    markets: allMarkets,
+    users,
+    actingAs,
+    sendClientMessage,
+  } = useWebSocket();
 
-  const handleOrder = (marketId: string, side: "buy" | "sell") => {
+  // Filter for open markets
+  const markets = Object.fromEntries(
+    Object.entries(allMarkets).filter(([_, market]) => market.open)
+  );
+
+  const handleOrder = (marketId: number, side: "buy" | "sell") => {
     const size = orders[marketId]?.size;
     if (!size) {
       toast.error("Please enter a size");
       return;
     }
 
-    ws.send(
-      JSON.stringify({
-        type: "placeOrder",
+    sendClientMessage({
+      createOrder: {
         marketId,
-        side,
-        size: parseFloat(size),
-      })
-    );
+        size: parseInt(size),
+        // Use mid price if available, otherwise 0
+        price: 0,
+        side:
+          side === "buy" ? websocket_api.Side.BID : websocket_api.Side.OFFER,
+      },
+    });
   };
 
   return (
@@ -38,39 +51,64 @@ export function Markets() {
           </tr>
         </thead>
         <tbody>
-          {/* We'll need to map through markets here */}
-          <tr>
-            <td>BTC-USD</td>
-            <td>50000</td>
-            <td>50100</td>
-            <td>50050</td>
-            <td>
-              <input
-                type="number"
-                step="0.01"
-                value={orders["BTC-USD"]?.size || ""}
-                onChange={(e) =>
-                  setOrders((prev) => ({
-                    ...prev,
-                    "BTC-USD": { size: e.target.value },
-                  }))
-                }
-              />
-            </td>
-            <td>
-              <div className="grid">
-                <button onClick={() => handleOrder("BTC-USD", "buy")}>
-                  Buy
-                </button>
-                <button
-                  onClick={() => handleOrder("BTC-USD", "sell")}
-                  className="secondary"
-                >
-                  Sell
-                </button>
-              </div>
-            </td>
-          </tr>
+          {Object.entries(markets).map(([id, market]) => {
+            const bids =
+              market.orders?.filter(
+                (x) => x.side === websocket_api.Side.BID && x.price !== null
+              ) || [];
+            const offers =
+              market.orders?.filter(
+                (x) => x.side === websocket_api.Side.OFFER && x.price !== null
+              ) || [];
+
+            bids.sort((a, b) => b.price! - a.price!);
+            offers.sort((a, b) => a.price! - b.price!);
+
+            const bestBid = Math.max(
+              market.minSettlement || 0,
+              bids[0]?.price || 0
+            );
+            const bestOffer = Math.min(
+              market.maxSettlement || 1_000_000_000_000,
+              offers[0]?.price || 1_000_000_000_000
+            );
+            const mid = (bestBid + bestOffer) / 2;
+
+            return (
+              <tr key={id}>
+                <td>{market.name}</td>
+                <td>{bestBid}</td>
+                <td>{bestOffer}</td>
+                <td>{mid}</td>
+                <td>
+                  <input
+                    type="number"
+                    step="1"
+                    value={orders[id]?.size || ""}
+                    onChange={(e) =>
+                      setOrders((prev) => ({
+                        ...prev,
+                        [id]: { size: e.target.value },
+                      }))
+                    }
+                  />
+                </td>
+                <td>
+                  <button onClick={() => handleOrder(Number(id), "buy")}>
+                    Buy
+                  </button>
+                </td>
+                <td>
+                  <button
+                    onClick={() => handleOrder(Number(id), "sell")}
+                    className="secondary"
+                  >
+                    Sell
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
