@@ -98,18 +98,28 @@ export function Market() {
       return;
     }
 
+    placeOrder({ size, price, side: orderType as "bid" | "offer" });
+  };
+
+  function placeOrder(props: {
+    size: number;
+    price: number;
+    side: "bid" | "offer";
+  }) {
     const order = {
       marketId: marketId,
-      size: size,
-      price: price,
+      size: props.size,
+      price: props.price,
       side:
-        orderType === "bid" ? websocket_api.Side.BID : websocket_api.Side.OFFER,
+        props.side === "bid"
+          ? websocket_api.Side.BID
+          : websocket_api.Side.OFFER,
     };
 
     sendClientMessage({
       createOrder: order,
     });
-  };
+  }
 
   return (
     <>
@@ -160,6 +170,7 @@ export function Market() {
                     <th>Name</th>
                     <th>Size</th>
                     <th>Price</th>
+                    <th>Take</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -178,6 +189,20 @@ export function Market() {
                       </td>
                       <td>{bid.size}</td>
                       <td>{bid.price}</td>
+                      <td>
+                        <button
+                          style={{ backgroundColor: "green" }}
+                          onClick={() =>
+                            placeOrder({
+                              size: bid.size || 0,
+                              price: bid.price || 0,
+                              side: "offer",
+                            })
+                          }
+                        >
+                          Take
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -188,6 +213,7 @@ export function Market() {
               <table>
                 <thead>
                   <tr>
+                    <th>Take</th>
                     <th>Price</th>
                     <th>Size</th>
                     <th>Name</th>
@@ -196,6 +222,20 @@ export function Market() {
                 <tbody>
                   {offers.map((offer, index) => (
                     <tr key={`offer-${index}`}>
+                      <td>
+                        <button
+                          style={{ backgroundColor: "red" }}
+                          onClick={() =>
+                            placeOrder({
+                              size: offer.size || 0,
+                              price: offer.price || 0,
+                              side: "bid",
+                            })
+                          }
+                        >
+                          Take
+                        </button>
+                      </td>
                       <td>{offer.price}</td>
                       <td>{offer.size}</td>
                       <td>
