@@ -6,7 +6,11 @@ import useWebSocket from "./lib/useWebSocket";
 import { useNotifications } from "./lib/notifications";
 import { Markets } from "./pages/Markets";
 
+import { useParams, useNavigate } from "react-router-dom";
+
 function App() {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const {
     sendClientMessage,
     stale,
@@ -24,11 +28,17 @@ function App() {
     Object.entries(allMarkets).filter(([id, market]) => market.open)
   );
 
-  const [marketId, setMarketId] = useState(0);
+  const [marketId, setMarketId] = useState(id ? Number(id) : 0);
 
   const [orderType, setOrderType] = useState("bid");
   const [orderSize, setOrderSize] = useState("");
   const [orderPrice, setOrderPrice] = useState("");
+
+  // Update URL when market changes
+  const handleMarketChange = (newId: number) => {
+    setMarketId(newId);
+    navigate(`/market/${newId}`);
+  };
 
   const marketLoaded = String(marketId) in markets;
   if (!marketLoaded) {
@@ -42,7 +52,7 @@ function App() {
             {Object.entries(markets).map(([id, market]) => {
               return (
                 <li>
-                  <a href="#" onClick={() => setMarketId(Number(id))}>
+                  <a href="#" onClick={() => handleMarketChange(Number(id))}>
                     {market.name}
                   </a>
                 </li>
@@ -127,7 +137,10 @@ function App() {
                   {Object.entries(markets).map(([id, market]) => {
                     return (
                       <li>
-                        <a href="#" onClick={() => setMarketId(Number(id))}>
+                        <a
+                          href="#"
+                          onClick={() => handleMarketChange(Number(id))}
+                        >
                           {market.name}
                         </a>
                       </li>
@@ -262,6 +275,7 @@ export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/market/:id" element={<App />} />
         <Route path="/original" element={<App />} />
         <Route path="/" element={<Markets />} />
       </Routes>

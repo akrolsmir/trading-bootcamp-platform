@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import useWebSocket from "../lib/useWebSocket";
 import { websocket_api } from "schema-js";
+import { useNavigate } from "react-router-dom";
 
 export function Markets() {
   const [orders, setOrders] = useState<Record<string, { size: string }>>({});
@@ -11,6 +12,7 @@ export function Markets() {
     actingAs,
     sendClientMessage,
   } = useWebSocket();
+  const navigate = useNavigate();
 
   // Filter for open markets
   const markets = Object.fromEntries(
@@ -37,6 +39,10 @@ export function Markets() {
           side === "buy" ? websocket_api.Side.BID : websocket_api.Side.OFFER,
       },
     });
+  };
+
+  const handleMarketClick = (id: string) => {
+    navigate(`/market/${id}`);
   };
 
   return (
@@ -79,7 +85,14 @@ export function Markets() {
 
             return (
               <tr key={id}>
-                <td>{market.name}</td>
+                <td>
+                  <a
+                    onClick={() => handleMarketClick(id)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {market.name}
+                  </a>
+                </td>
                 <td>{bestBid}</td>
                 <td>{bestOffer}</td>
                 <td>{mid}</td>
