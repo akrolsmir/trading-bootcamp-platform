@@ -13,9 +13,14 @@ function App() {
     payments,
     ownerships,
     users,
-    markets,
+    markets: allMarkets,
     lastMessage,
   } = useWebSocket();
+
+  // Only show open markets
+  const markets = Object.fromEntries(
+    Object.entries(allMarkets).filter(([id, market]) => market.open)
+  );
 
   const [marketId, setMarketId] = useState(0);
 
