@@ -194,22 +194,52 @@ export function Market() {
                         )}
                       </td>
                       <td>{bid.size}</td>
-                      <td>{bid.price}</td>
                       <td>
-                        <button
+                        <a
                           style={{
-                            backgroundColor: "pink",
+                            cursor: "pointer",
+                            fontSize: "1.3em",
+                            marginRight: "0.5em",
                           }}
                           onClick={() =>
                             placeOrder({
                               size: bid.size || 0,
-                              price: bid.price || 0,
-                              side: "offer",
+                              price: (bid.price || -0.01) + 0.01,
+                              side: "bid",
                             })
                           }
                         >
-                          Take
-                        </button>
+                          🔼
+                        </a>
+                        {bid.price}
+                      </td>
+                      <td>
+                        {bid.ownerId !== actingAs ? (
+                          <button
+                            style={{
+                              backgroundColor: "pink",
+                            }}
+                            onClick={() =>
+                              placeOrder({
+                                size: bid.size || 0,
+                                price: bid.price || 0,
+                                side: "offer",
+                              })
+                            }
+                          >
+                            Take
+                          </button>
+                        ) : (
+                          <button
+                            style={{
+                              backgroundColor: "lightgray",
+                              color: "black",
+                            }}
+                            onClick={handleOutAllOrders}
+                          >
+                            Out
+                          </button>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -231,20 +261,50 @@ export function Market() {
                   {offers.map((offer, index) => (
                     <tr key={`offer-${index}`}>
                       <td>
-                        <button
-                          style={{ backgroundColor: "teal" }}
+                        {offer.ownerId !== actingAs ? (
+                          <button
+                            style={{ backgroundColor: "teal" }}
+                            onClick={() =>
+                              placeOrder({
+                                size: offer.size || 0,
+                                price: offer.price || 0,
+                                side: "bid",
+                              })
+                            }
+                          >
+                            Take
+                          </button>
+                        ) : (
+                          <button
+                            style={{
+                              backgroundColor: "lightgray",
+                              color: "black",
+                            }}
+                            onClick={handleOutAllOrders}
+                          >
+                            Out
+                          </button>
+                        )}
+                      </td>
+                      <td>
+                        <a
+                          style={{
+                            cursor: "pointer",
+                            fontSize: "1.3em",
+                            marginRight: "0.5em",
+                          }}
                           onClick={() =>
                             placeOrder({
                               size: offer.size || 0,
-                              price: offer.price || 0,
-                              side: "bid",
+                              price: (offer.price || 0) - 0.01,
+                              side: "offer",
                             })
                           }
                         >
-                          Take
-                        </button>
+                          🔼
+                        </a>
+                        &nbsp;{offer.price}
                       </td>
-                      <td>{offer.price}</td>
                       <td>{offer.size}</td>
                       <td>
                         {offer.ownerId == actingAs ? (
