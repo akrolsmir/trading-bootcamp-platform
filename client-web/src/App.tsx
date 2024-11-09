@@ -1,8 +1,10 @@
 import { FormEvent, useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { websocket_api } from "schema-js";
 import useWebSocket from "./lib/useWebSocket";
 import { useNotifications } from "./lib/notifications";
+import { Markets } from "./pages/Markets";
 
 function App() {
   const {
@@ -253,6 +255,11 @@ function App() {
         </div>
       </main>
     </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/all" element={<Markets />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
