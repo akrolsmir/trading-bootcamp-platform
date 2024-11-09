@@ -14,7 +14,10 @@ export function Markets() {
 
   // Filter for open markets
   const markets = Object.fromEntries(
-    Object.entries(allMarkets).filter(([_, market]) => market.open)
+    Object.entries(allMarkets)
+      .filter(([_, market]) => market.open)
+      // For this game, only show _test markets
+      .filter(([_, market]) => market.name?.endsWith("_test"))
   );
 
   const handleOrder = (marketId: number, side: "buy" | "sell") => {
