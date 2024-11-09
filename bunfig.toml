@@ -1,0 +1,2 @@
+[workspaces]
+patterns = ["frontend", "schema-js"]
