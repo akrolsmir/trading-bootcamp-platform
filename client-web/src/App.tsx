@@ -255,12 +255,16 @@ function App() {
         </div>
       </main>
     </>
+  );
+}
+
+export default function Router() {
+  return (
     <BrowserRouter>
       <Routes>
-        <Route path="/all" element={<Markets />} />
+        <Route path="/original" element={<App />} />
+        <Route path="/" element={<Markets />} />
       </Routes>
     </BrowserRouter>
   );
 }
-
-export default App;
