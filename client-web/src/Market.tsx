@@ -191,7 +191,9 @@ export function Market() {
                       <td>{bid.price}</td>
                       <td>
                         <button
-                          style={{ backgroundColor: "green" }}
+                          style={{
+                            backgroundColor: "pink",
+                          }}
                           onClick={() =>
                             placeOrder({
                               size: bid.size || 0,
@@ -224,7 +226,7 @@ export function Market() {
                     <tr key={`offer-${index}`}>
                       <td>
                         <button
-                          style={{ backgroundColor: "red" }}
+                          style={{ backgroundColor: "teal" }}
                           onClick={() =>
                             placeOrder({
                               size: offer.size || 0,
@@ -264,13 +266,30 @@ export function Market() {
             <div className="grid">
               <label>
                 Order Type:
-                <select
-                  value={orderType}
-                  onChange={(e) => setOrderType(e.target.value)}
-                >
-                  <option value="bid">Bid</option>
-                  <option value="offer">Offer</option>
-                </select>
+                <div className="grid">
+                  <button
+                    type="button"
+                    style={{
+                      backgroundColor:
+                        orderType === "bid" ? "teal" : "transparent",
+                      color: orderType === "bid" ? "white" : "inherit",
+                    }}
+                    onClick={() => setOrderType("bid")}
+                  >
+                    Bid
+                  </button>
+                  <button
+                    type="button"
+                    style={{
+                      backgroundColor:
+                        orderType === "offer" ? "pink" : "transparent",
+                      color: orderType === "offer" ? "white" : "inherit",
+                    }}
+                    onClick={() => setOrderType("offer")}
+                  >
+                    Offer
+                  </button>
+                </div>
               </label>
               <label>
                 Size:
