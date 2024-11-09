@@ -127,6 +127,10 @@ export function Market() {
     });
   }
 
+  const exposure = portfolio?.marketExposures?.find(
+    (x) => x.marketId === marketId
+  );
+
   return (
     <>
       <header className="container">
@@ -135,6 +139,7 @@ export function Market() {
           <em>{users.get(actingAs || "")?.name}</em>. &nbsp; Available:{" "}
           <strong>{portfolio?.availableBalance}</strong>
         </h2>
+        <p>{market.description || "No description"}</p>
         {market.closed ? (
           <h3>Market is settled at {market.closed.settlePrice}.</h3>
         ) : (
@@ -186,7 +191,9 @@ export function Market() {
                       <td>
                         {bid.ownerId == actingAs ? (
                           <ins>
-                            {bid.ownerId ? users.get(bid.ownerId)?.name : ""}
+                            <strong>
+                              {bid.ownerId ? users.get(bid.ownerId)?.name : ""}
+                            </strong>
                           </ins>
                         ) : bid.ownerId ? (
                           users.get(bid.ownerId)?.name
@@ -310,9 +317,11 @@ export function Market() {
                       <td>
                         {offer.ownerId == actingAs ? (
                           <ins>
-                            {offer.ownerId
-                              ? users.get(offer.ownerId)?.name
-                              : ""}
+                            <strong>
+                              {offer.ownerId
+                                ? users.get(offer.ownerId)?.name
+                                : ""}
+                            </strong>
                           </ins>
                         ) : offer.ownerId ? (
                           users.get(offer.ownerId)?.name
@@ -388,6 +397,16 @@ export function Market() {
           <button onClick={handleOutAllOrders} className="contrast">
             Out on all orders
           </button>
+        </div>
+        <div>
+          <h3>Positions</h3>
+          {Object.entries(exposure || {}).map(([k, v]) => {
+            return (
+              <p>
+                {k}: {v}
+              </p>
+            );
+          })}
         </div>
       </main>
     </>
