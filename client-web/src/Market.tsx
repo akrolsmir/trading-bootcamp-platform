@@ -211,7 +211,7 @@ export function Market() {
                         >
                           🔼
                         </a>
-                        {bid.price}
+                        <strong>{bid.price}</strong>
                       </td>
                       <td>
                         {bid.ownerId !== actingAs ? (
@@ -303,7 +303,7 @@ export function Market() {
                         >
                           🔼
                         </a>
-                        &nbsp;{offer.price}
+                        <strong>{offer.price}</strong>
                       </td>
                       <td>{offer.size}</td>
                       <td>
