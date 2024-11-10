@@ -100,7 +100,7 @@ export function Markets() {
                   <h3>{bestBid}</h3>
                 </td>
                 <td>
-                  <h3>{mid}</h3>
+                  <h3 style={{ color: "gray" }}>{mid}</h3>
                 </td>
                 <td>
                   <h3>{bestOffer}</h3>
