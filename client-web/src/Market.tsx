@@ -158,7 +158,7 @@ export function Market() {
                     <th>Name</th>
                     <th>Size</th>
                     <th>Price</th>
-                    <th>Take</th>
+                    <th>Sell</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -211,7 +211,7 @@ export function Market() {
                               })
                             }
                           >
-                            Take
+                            Sell
                           </button>
                         ) : (
                           <button
@@ -238,7 +238,7 @@ export function Market() {
                     <th>Take</th>
                     <th>Price</th>
                     <th>Size</th>
-                    <th>Name</th>
+                    <th>Buy</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -256,7 +256,7 @@ export function Market() {
                               })
                             }
                           >
-                            Take
+                            Buy
                           </button>
                         ) : (
                           <button
