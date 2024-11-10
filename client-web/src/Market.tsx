@@ -134,48 +134,24 @@ export function Market() {
   return (
     <>
       <header className="container">
-        <h2>
-          Viewing <em>{market.name}</em> and as{" "}
-          <em>{users.get(actingAs || "")?.name}</em>. &nbsp; Available:{" "}
+        <p>
+          <a href="/">←</a> &nbsp;
+          <strong>{market.name}</strong> as{" "}
+          <em>{users.get(actingAs || "")?.name}</em>. &nbsp;{" "}
+          {market.description || "No description"} Available:{" "}
           <strong>{portfolio?.availableBalance}</strong>
-        </h2>
-        <p>{market.description || "No description"}</p>
+        </p>
         {market.closed ? (
           <h3>Market is settled at {market.closed.settlePrice}.</h3>
         ) : (
           <></>
         )}
-        <nav>
-          <ul>
-            <li>
-              <details className="dropdown">
-                <summary role="button" className="secondary">
-                  Select market
-                </summary>
-                <ul>
-                  {Object.entries(markets).map(([id, market]) => {
-                    return (
-                      <li>
-                        <a
-                          href="#"
-                          onClick={() => handleMarketChange(Number(id))}
-                        >
-                          {market.name}
-                        </a>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </details>
-            </li>
-          </ul>
-        </nav>
       </header>
       <main className="container">
         <div className="container">
           <div className="grid">
             <div>
-              <h3>Bids</h3>
+              <p>Bids</p>
               <table>
                 <thead>
                   <tr>
@@ -255,7 +231,7 @@ export function Market() {
               </table>
             </div>
             <div>
-              <h3>Offers</h3>
+              <p>Offers</p>
               <table>
                 <thead>
                   <tr>
@@ -337,7 +313,7 @@ export function Market() {
           </div>
         </div>
         <div className="container">
-          <h3>Place an order</h3>
+          {/* <h3>Place an order</h3> */}
           <form onSubmit={handleSubmitOrder}>
             <div className="grid">
               <label>
