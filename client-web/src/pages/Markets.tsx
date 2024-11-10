@@ -4,6 +4,16 @@ import useWebSocket from "../lib/useWebSocket";
 import { websocket_api } from "schema-js";
 import { useNavigate } from "react-router-dom";
 
+const FAIRS = {
+  tw_sum_test: 378,
+  tw_diff_test: 107.64,
+  tw_avg_test: 94.5,
+  tw_a_test: 148.32,
+  tw_b_test: 112.5,
+  tw_c_test: 76.5,
+  tw_d_test: 40.68,
+};
+
 export function Markets() {
   const [orders, setOrders] = useState<Record<string, { size: string }>>({});
   const {
@@ -57,6 +67,7 @@ export function Markets() {
             <th>Bid / dice</th>
             <th>Bid</th>
             <th>Mid</th>
+            <th>Fair/Diff</th>
             <th>Ask</th>
             <th>Ask / dice</th>
           </tr>
@@ -88,6 +99,7 @@ export function Markets() {
             // If market name contains 123/456/789, dice = 3; else 9
             const numbers = ["123", "456", "789"];
             const dice = numbers.some((n) => market.name?.includes(n)) ? 3 : 9;
+            const fair = FAIRS[market.name as keyof typeof FAIRS];
 
             return (
               <tr key={id}>
@@ -109,6 +121,13 @@ export function Markets() {
                 </td>
                 <td>
                   <h3 style={{ color: "#aaa" }}>{mid}</h3>
+                </td>
+                <td>
+                  <span style={{ color: "#666" }}>{fair?.toFixed(0)}</span>{" "}
+                  <span style={{ color: "#aaa" }}>
+                    {fair - mid > 0 ? "+" : ""}
+                    {(fair - mid).toFixed(0)}
+                  </span>
                 </td>
                 <td>
                   <h3>{bestOffer}</h3>
