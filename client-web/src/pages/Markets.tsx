@@ -19,10 +19,9 @@ export function Markets() {
   // Filter for open markets
   const markets = Object.fromEntries(
     Object.entries(allMarkets)
-      .filter(([_, market]) => market.open)
+      // .filter(([_, market]) => market.open)
       // For this game, only show _test markets
-      // .filter(([_, market]) => market.name?.endsWith("_test"))
-      .filter(([_, market]) => toShow.includes(market.name))
+      .filter(([_, market]) => market.name?.startsWith("tw_"))
   );
 
   const handleOrder = (marketId: number, side: "buy" | "sell") => {
@@ -55,11 +54,11 @@ export function Markets() {
         <thead>
           <tr>
             <th>Market</th>
+            <th>Bid / dice</th>
             <th>Bid</th>
             <th>Mid</th>
             <th>Ask</th>
-            <th>Order Size</th>
-            <th>Actions</th>
+            <th>Ask / dice</th>
           </tr>
         </thead>
         <tbody>
@@ -86,6 +85,10 @@ export function Markets() {
             );
             const mid = (bestBid + bestOffer) / 2;
 
+            // If market name contains 123/456/789, dice = 3; else 9
+            const numbers = ["123", "456", "789"];
+            const dice = numbers.some((n) => market.name?.includes(n)) ? 3 : 9;
+
             return (
               <tr key={id}>
                 <td>
@@ -97,40 +100,23 @@ export function Markets() {
                   </a>
                 </td>
                 <td>
+                  <h3 style={{ color: "#aaa" }}>
+                    {(bestBid / dice).toFixed(1)}
+                  </h3>
+                </td>
+                <td>
                   <h3>{bestBid}</h3>
                 </td>
                 <td>
-                  <h3 style={{ color: "gray" }}>{mid}</h3>
+                  <h3 style={{ color: "#aaa" }}>{mid}</h3>
                 </td>
                 <td>
                   <h3>{bestOffer}</h3>
                 </td>
-
                 <td>
-                  <input
-                    type="number"
-                    step="1"
-                    value={orders[id]?.size || ""}
-                    onChange={(e) =>
-                      setOrders((prev) => ({
-                        ...prev,
-                        [id]: { size: e.target.value },
-                      }))
-                    }
-                  />
-                </td>
-                <td>
-                  <button onClick={() => handleOrder(Number(id), "buy")}>
-                    Buy
-                  </button>
-                </td>
-                <td>
-                  <button
-                    onClick={() => handleOrder(Number(id), "sell")}
-                    className="secondary"
-                  >
-                    Sell
-                  </button>
+                  <h3 style={{ color: "#aaa" }}>
+                    {(bestOffer / dice).toFixed(1)}
+                  </h3>
                 </td>
               </tr>
             );
