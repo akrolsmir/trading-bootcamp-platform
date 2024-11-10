@@ -368,23 +368,23 @@ export function Market() {
                 </div>
               </label>
               <label>
-                Size:
-                <input
-                  type="number"
-                  value={orderSize}
-                  onChange={(e) => setOrderSize(e.target.value)}
-                  placeholder="Enter size"
-                  step="0.01"
-                  required
-                />
-              </label>
-              <label>
                 Price:
                 <input
                   type="number"
                   value={orderPrice}
                   onChange={(e) => setOrderPrice(e.target.value)}
                   placeholder="Enter price"
+                  step="0.01"
+                  required
+                />
+              </label>
+              <label>
+                Size:
+                <input
+                  type="number"
+                  value={orderSize}
+                  onChange={(e) => setOrderSize(e.target.value)}
+                  placeholder="Enter size"
                   step="0.01"
                   required
                 />
