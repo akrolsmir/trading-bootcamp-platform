@@ -219,9 +219,15 @@ export function Market() {
                               backgroundColor: "lightgray",
                               color: "black",
                             }}
-                            onClick={handleOutAllOrders}
+                            onClick={() =>
+                              sendClientMessage({
+                                cancelOrder: {
+                                  id: bid.id,
+                                },
+                              })
+                            }
                           >
-                            Out
+                            Kill
                           </button>
                         )}
                       </td>
@@ -264,9 +270,15 @@ export function Market() {
                               backgroundColor: "lightgray",
                               color: "black",
                             }}
-                            onClick={handleOutAllOrders}
+                            onClick={() =>
+                              sendClientMessage({
+                                cancelOrder: {
+                                  id: offer.id,
+                                },
+                              })
+                            }
                           >
-                            Out
+                            Kill
                           </button>
                         )}
                       </td>
