@@ -5,25 +5,25 @@ import { websocket_api } from "schema-js";
 import { useNavigate } from "react-router-dom";
 
 const FAIRS = {
-  tw_sum_test: 378,
-  tw_diff_test: 107.64,
-  tw_avg_test: 94.5,
-  tw_a_test: 148.32,
-  tw_b_test: 112.5,
-  tw_c_test: 76.5,
-  tw_d_test: 40.68,
-  tw_a_123_test: 49.4,
-  tw_a_456_test: 49.4,
-  tw_a_789_test: 49.4,
-  tw_b_123_test: 37.5,
-  tw_b_456_test: 37.5,
-  tw_b_789_test: 37.5,
-  tw_c_123_test: 25.5,
-  tw_c_456_test: 25.5,
-  tw_c_789_test: 25.5,
-  tw_d_123_test: 13.6,
-  tw_d_456_test: 13.6,
-  tw_d_789_test: 13.6,
+  tw_sum: 378,
+  tw_diff: 107.64,
+  tw_avg: 94.5,
+  tw_a: 148.32,
+  tw_b: 112.5,
+  tw_c: 76.5,
+  tw_d: 40.68,
+  tw_a_123: 49.4,
+  tw_a_456: 49.4,
+  tw_a_789: 49.4,
+  tw_b_123: 37.5,
+  tw_b_456: 37.5,
+  tw_b_789: 37.5,
+  tw_c_123: 25.5,
+  tw_c_456: 25.5,
+  tw_c_789: 25.5,
+  tw_d_123: 13.6,
+  tw_d_456: 13.6,
+  tw_d_789: 13.6,
 };
 
 export function Markets() {
@@ -43,7 +43,10 @@ export function Markets() {
     Object.entries(allMarkets)
       // .filter(([_, market]) => market.open)
       // For this game, only show _test markets
-      .filter(([_, market]) => market.name?.startsWith("tw_"))
+      .filter(
+        ([_, market]) =>
+          market.name?.startsWith("tw_") && !market.name?.endsWith("_test")
+      )
   );
 
   const handleOrder = (marketId: number, side: "buy" | "sell") => {
