@@ -12,6 +12,18 @@ const FAIRS = {
   tw_b_test: 112.5,
   tw_c_test: 76.5,
   tw_d_test: 40.68,
+  tw_a_123_test: 49.4,
+  tw_a_456_test: 49.4,
+  tw_a_789_test: 49.4,
+  tw_b_123_test: 37.5,
+  tw_b_456_test: 37.5,
+  tw_b_789_test: 37.5,
+  tw_c_123_test: 25.5,
+  tw_c_456_test: 25.5,
+  tw_c_789_test: 25.5,
+  tw_d_123_test: 13.6,
+  tw_d_456_test: 13.6,
+  tw_d_789_test: 13.6,
 };
 
 export function Markets() {
