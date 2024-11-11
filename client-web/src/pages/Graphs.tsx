@@ -1,16 +1,16 @@
 export function Graphs() {
   const urls = [
     // A, B, C, D
-    "market/122",
-    "market/123",
+    "market/161",
+    "market/162",
     // sum
-    "market/119",
+    "market/158",
 
     // C, D
-    "market/124",
-    "market/125",
+    "market/163",
+    "market/164",
     // avg
-    "market/121",
+    "market/160",
   ];
 
   return (
